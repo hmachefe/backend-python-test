@@ -1,5 +1,6 @@
 from flask import Flask, g
 import sqlite3
+from alayatodo import orm
 
 # configuration
 DATABASE = '/tmp/alayatodo.db'
@@ -11,7 +12,7 @@ PASSWORD = 'default'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-
+user_dao = orm.UserDao()
 
 def connect_db():
     conn = sqlite3.connect(app.config['DATABASE'])

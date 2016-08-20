@@ -1,6 +1,5 @@
-from alayatodo import app
+from alayatodo import app, user_dao
 from flask import (
-    g,
     redirect,
     render_template,
     request,
@@ -25,9 +24,7 @@ def login_POST():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    sql = "SELECT * FROM users WHERE username = '%s' AND password = '%s'";
-    cur = g.db.execute(sql % (username, password))
-    user = cur.fetchone()
+    user = user_dao.find_user(username, password)
     if user:
         session['user'] = dict(user)
         session['logged_in'] = True
@@ -45,9 +42,8 @@ def logout():
 
 @app.route('/todo/<id>', methods=['GET'])
 def todo(id):
-    cur = g.db.execute("SELECT * FROM todos WHERE id ='%s'" % id)
-    todo = cur.fetchone()
-    return render_template('todo.html', todo=todo)
+    todo = user_dao.findDescriptionById(id)
+    return render_template('find_description_by_id.html', todo=todo)
 
 
 @app.route('/todo', methods=['GET'])
@@ -55,8 +51,7 @@ def todo(id):
 def todos():
     if not session.get('logged_in'):
         return redirect('/login')
-    cur = g.db.execute("SELECT * FROM todos")
-    todos = cur.fetchall()
+    todos = user_dao.find_all_description()
     return render_template('todos.html', todos=todos)
 
 
@@ -68,11 +63,7 @@ def todos_POST():
     user = session['user']['id']
     description = request.form.get('description', '')
     if (description != '') and (len(description.strip()) != 0):
-        g.db.execute(
-            "INSERT INTO todos (user_id, description) VALUES ('%s', '%s')"
-            % (user, description)
-            )
-        g.db.commit()
+        user_dao.insert_description(user, description)
     else:
         print "empty description is not granted. User shall fill in desc with relevant content"
 
@@ -83,6 +74,5 @@ def todos_POST():
 def todo_delete(id):
     if not session.get('logged_in'):
         return redirect('/login')
-    g.db.execute("DELETE FROM todos WHERE id ='%s'" % id)
-    g.db.commit()
+    user_dao.delete_description(id)
     return redirect('/todo')
