@@ -2,6 +2,7 @@ from alayatodo import app, user_dao
 from flask import (
     redirect,
     render_template,
+    jsonify,
     request,
     session
     )
@@ -45,6 +46,10 @@ def todo(id):
     todo = user_dao.find_description_by_id(id)
     return render_template('todo.html', todo=todo)
 
+@app.route('/todo/<id>/json', methods=['GET'])
+def todo_json(id):
+    todo = user_dao.find_description_by_id(id)
+    return jsonify(id=todo['id'], user_id=todo['user_id'], description=todo['description'])
 
 @app.route('/todo', methods=['GET'])
 @app.route('/todo/', methods=['GET'])

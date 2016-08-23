@@ -10,17 +10,20 @@ class UserDao:
     	sql = "SELECT * FROM users WHERE username = '%s' AND password = '%s'";
     	cur = g.db.execute(sql % (username, password))
     	user = cur.fetchone()
+        cur.close()
     	return user
 
     def find_description_by_id(self, id):
     	cur = g.db.execute("SELECT * FROM todos WHERE id ='%s'" % id)
     	todo = cur.fetchone()
+        cur.close()
     	return todo
 
     def find_all_description(self):
-	    cur = g.db.execute("SELECT * FROM todos")
-	    todos = cur.fetchall()
-	    return todos
+        cur = g.db.execute("SELECT * FROM todos")
+        todos = cur.fetchall()
+        cur.close()
+        return todos
 
     def delete_description(self, id):
 	    g.db.execute("DELETE FROM todos WHERE id ='%s'" % id)
