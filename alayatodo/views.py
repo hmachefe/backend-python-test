@@ -42,8 +42,8 @@ def logout():
 
 @app.route('/todo/<id>', methods=['GET'])
 def todo(id):
-    todo = user_dao.findDescriptionById(id)
-    return render_template('find_description_by_id.html', todo=todo)
+    todo = user_dao.find_description_by_id(id)
+    return render_template('todo.html', todo=todo)
 
 
 @app.route('/todo', methods=['GET'])
