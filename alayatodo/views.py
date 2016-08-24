@@ -2,9 +2,8 @@ from alayatodo import app, user_dao
 from flask import (
     redirect,
     render_template,
-    jsonify,
-    request,
-    session
+    jsonify, request,
+    session, flash
     )
 
 
@@ -68,6 +67,7 @@ def todos_POST():
     user = session['user']['id']
     description = request.form.get('description', '')
     if (description != '') and (len(description.strip()) != 0):
+        flash("description added")
         user_dao.insert_description(user, description, 0)
     else:
         print "empty description is not granted. User shall fill in desc with relevant content"
@@ -79,6 +79,7 @@ def todos_POST():
 def todo_delete(id):
     if not session.get('logged_in'):
         return redirect('/login')
+    flash("description deleted")
     user_dao.delete_description(id)
     return redirect('/todo')
 
@@ -86,5 +87,6 @@ def todo_delete(id):
 def todo_complete(id):
     if not session.get('logged_in'):
         return redirect('/login')
+    flash("description completed")
     user_dao.complete_description(id)
     return redirect('/todo')
