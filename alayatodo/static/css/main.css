@@ -22,3 +22,9 @@ body {
     padding: .1em .25em;
     font-size: 150%;
 }
+
+.icon-json {
+    background-image: url('../img/json.png');
+    width: 38px;
+    height: 16px;
+}
