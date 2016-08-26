@@ -60,7 +60,7 @@ Extra tasks:
 
 
 ### Documentation
-This app use [Flask](http://flask.pocoo.org/docs/0.10/).
+This app uses [Flask](http://flask.pocoo.org/docs/0.10/).
 
 
 ### How to submit your work?
